@@ -18,7 +18,7 @@ import { MapComponent } from './map/map.component';
     FormsModule,
     HttpModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCU67O5vLyUEBMH_Gh34iBU-MHYoH4cc4k'
+      apiKey: ''
     })
   ],
   providers: [],
