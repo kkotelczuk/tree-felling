@@ -1,0 +1,22 @@
+<div class="map-container">
+  <sebm-google-map
+    [latitude]="lat"
+    [longitude]="lng"
+    [zoom]="zoom"
+    [streetViewControl]="streetViewControl"
+    (mapClick)="addMarker($event)"
+  >
+    <sebm-google-map-marker
+      *ngFor="let m of markers"
+      [latitude]="m.lat"
+      [longitude]="m.lng"
+      [markerDraggable]="m.draggable"
+    >
+      <sebm-google-map-info-window>
+        <strong>{{m.lat}}</strong>
+        <strong>:{{m.lng}}</strong>
+      </sebm-google-map-info-window>
+    </sebm-google-map-marker>
+  </sebm-google-map>
+</div>
+
