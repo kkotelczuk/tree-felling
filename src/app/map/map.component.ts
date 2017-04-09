@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MarkerDialogService } from '../services/marker-dialog.service';
 
 @Component({
   selector: 'app-map',
@@ -12,13 +13,15 @@ export class MapComponent implements OnInit {
   streetViewControl = false;
   markers = [];
 
-  constructor() { }
+  constructor(private dialogService: MarkerDialogService) { }
 
   ngOnInit() {
   }
 
   addMarker($event) {
-    console.log($event);
+    this.dialogService
+      .showDialog($event.coords)
+      .subscribe(result => result ? this.dialogService.sendProposal(result) : '');
     this.markers.push({
       lat: $event.coords.lat,
       lng: $event.coords.lng,

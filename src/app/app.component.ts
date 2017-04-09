@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MarkerDialogService } from './services/marker-dialog.service';
 
 @Component({
   selector: 'app-root',
@@ -6,4 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  constructor(private dialogService: MarkerDialogService) {}
 }
+
