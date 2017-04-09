@@ -33,8 +33,9 @@ export class AuthService {
     return this.http.post(this.baseUrl, postBody,  { headers: this.headers })
               .toPromise()
               .then(response => {
-                const { token, lastName, name, email } = response.json();
+                const { token, lastName, name, email, isAdmin } = response.json();
                 sessionStorage.setItem('token', token);
+                sessionStorage.setItem('admin', isAdmin);
                 sessionStorage.setItem('userData', JSON.stringify({lastName, name, email}));
               })
               .catch(error => this.handleError(error));
