@@ -9,15 +9,19 @@ import { AgmCoreModule } from 'angular2-google-maps/core';
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import { MarkerDialogComponent } from './marker-dialog/marker-dialog.component';
+import { AuthDialogComponent } from './auth-dialog/auth-dialog.component';
 
 import { MarkerDialogService } from './services/marker-dialog.service';
 import { MapService } from './services/map.service';
+import { UserService } from './services/user.service';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    MarkerDialogComponent
+    MarkerDialogComponent,
+    AuthDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -31,10 +35,13 @@ import { MapService } from './services/map.service';
   ],
   providers: [
     MarkerDialogService,
-    MapService
+    MapService,
+    UserService,
+    AuthService
   ],
   entryComponents: [
-    MarkerDialogComponent
+    MarkerDialogComponent,
+    AuthDialogComponent
   ],
   bootstrap: [AppComponent]
 })

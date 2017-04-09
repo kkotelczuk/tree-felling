@@ -5,23 +5,35 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import { Proposal } from '../proposal';
+import { User } from '../user';
+import { UserService } from './user.service';
 
 @Injectable()
 export class MarkerDialogService {
   private baseUrl = 'https://band-api.dev.volanto.pl:13888';
-  proposal: Proposal = {} as Proposal;
-  private user = {
+  private proposal: Proposal = {} as Proposal;
+  private user: User;
+  private headers: Headers;
 
-  };
-  private headers = new Headers({
-    'X-AUTH-TOKEN': this.user.token,
-    'Content-Type': 'application/json'
-  });
+  constructor(
+    private dialog: MdDialog,
+    private http: Http,
+    private userService: UserService
+  ) {}
 
-  constructor(private dialog: MdDialog, private http: Http) { }
+  private setHeaders(token): Headers {
+    return new Headers({
+      'X-AUTH-TOKEN': token,
+      'Content-Type': 'application/json'
+    })
+  }
 
   private validateGis(lat, lng):Promise<any> {
     const gisUrl = `${this.baseUrl}/proposals/gis/validate/?latitude=${lat}&longitude=${lng}`;
+    this.userService.getUser().then(response => {
+      this.user = response;
+      this.headers = this.setHeaders(response.token);
+    });
 
     return this.http.get(gisUrl, { headers: this.headers })
                .toPromise()
