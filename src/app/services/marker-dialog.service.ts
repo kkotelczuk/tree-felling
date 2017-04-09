@@ -11,6 +11,7 @@ export class MarkerDialogService {
   private baseUrl = 'https://band-api.dev.volanto.pl:13888';
   proposal: Proposal = {} as Proposal;
   private user = {
+
   };
   private headers = new Headers({
     'X-AUTH-TOKEN': this.user.token,
@@ -50,7 +51,7 @@ export class MarkerDialogService {
     return dialogRef.afterClosed();
   }
 
-  public sendProposal(value) {
+  public sendProposal(value):Promise<any> {
     const proposalUrl = `${this.baseUrl}/proposals/`
     this.proposal.name = this.user.name;
     this.proposal.lastName = this.user.lastName;
@@ -58,10 +59,9 @@ export class MarkerDialogService {
     this.proposal = Object.assign(this.proposal, value.proposal)
 
     const putBody = JSON.stringify(this.proposal);
-    console.log(putBody);
-    this.http.put(proposalUrl, putBody,  { headers: this.headers })
+    return this.http.put(proposalUrl, putBody,  { headers: this.headers })
               .toPromise()
-              .then(response => console.log(response))
+              .then(response => response.json() as Proposal)
               .catch(error => console.log(error));
   }
 }

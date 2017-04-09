@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MarkerDialogService } from '../services/marker-dialog.service';
+import { MapService } from '../services/map.service';
+import { Proposal } from '../proposal';
 
 @Component({
   selector: 'app-map',
@@ -12,19 +14,33 @@ export class MapComponent implements OnInit {
   zoom = 12;
   streetViewControl = false;
   markers = [];
+  public proposals: Proposal[];
 
-  constructor(private dialogService: MarkerDialogService) { }
+  constructor(
+    private dialogService: MarkerDialogService,
+    private mapService:  MapService
+  ) { }
 
   ngOnInit() {
+    this.mapService.getProposals().then(response => {
+      this.proposals = response;
+      localStorage.setItem('proposals', JSON.stringify(this.proposals));
+      this.proposals.forEach(item => this.addMarker(item));
+      console.log(response);
+    });
   }
 
-  addMarker($event) {
+  openDialog($event) {
     this.dialogService
       .showDialog($event.coords)
-      .subscribe(result => result ? this.dialogService.sendProposal(result) : '');
+      .subscribe(result => result ? this.dialogService.sendProposal(result)
+        .then(response => this.addMarker(response)) : '');
+  }
+
+  addMarker(value) {
     this.markers.push({
-      lat: $event.coords.lat,
-      lng: $event.coords.lng,
+      lat: value.latitude,
+      lng: value.longitude,
       draggable: false
     });
   }

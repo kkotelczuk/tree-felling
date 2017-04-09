@@ -4,7 +4,7 @@
     [longitude]="lng"
     [zoom]="zoom"
     [streetViewControl]="streetViewControl"
-    (mapClick)="addMarker($event)"
+    (mapClick)="openDialog($event)"
   >
     <sebm-google-map-marker
       *ngFor="let m of markers"

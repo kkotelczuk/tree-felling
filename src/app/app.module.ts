@@ -4,7 +4,6 @@ import {MaterialModule} from '@angular/material';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
 import { AgmCoreModule } from 'angular2-google-maps/core';
 
 import { AppComponent } from './app.component';
@@ -12,6 +11,7 @@ import { MapComponent } from './map/map.component';
 import { MarkerDialogComponent } from './marker-dialog/marker-dialog.component';
 
 import { MarkerDialogService } from './services/marker-dialog.service';
+import { MapService } from './services/map.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +29,10 @@ import { MarkerDialogService } from './services/marker-dialog.service';
       apiKey: ''
     })
   ],
-  providers: [MarkerDialogService],
+  providers: [
+    MarkerDialogService,
+    MapService
+  ],
   entryComponents: [
     MarkerDialogComponent
   ],
