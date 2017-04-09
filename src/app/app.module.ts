@@ -13,7 +13,6 @@ import { AuthDialogComponent } from './auth-dialog/auth-dialog.component';
 
 import { MarkerDialogService } from './services/marker-dialog.service';
 import { MapService } from './services/map.service';
-import { UserService } from './services/user.service';
 import { AuthService } from './services/auth.service';
 
 @NgModule({
@@ -36,7 +35,6 @@ import { AuthService } from './services/auth.service';
   providers: [
     MarkerDialogService,
     MapService,
-    UserService,
     AuthService
   ],
   entryComponents: [

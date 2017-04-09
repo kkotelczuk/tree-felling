@@ -4,6 +4,7 @@ import { AuthDialogComponent } from '../auth-dialog/auth-dialog.component';
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
+import { User } from '../user';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +16,11 @@ export class AuthService {
     private http: Http
     ) { }
 
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error);
+    return Promise.reject(error.message || error);
+  }
+
   public showAuthDialog(): Observable<any> {
     let dialogRef: MdDialogRef<AuthDialogComponent>;
     dialogRef = this.dialog.open(AuthDialogComponent);
@@ -23,15 +29,15 @@ export class AuthService {
   }
 
   public authorizeUser(value): Promise<any> {
-    console.log(value)
     const postBody = JSON.stringify(value.auth);
     return this.http.post(this.baseUrl, postBody,  { headers: this.headers })
               .toPromise()
               .then(response => {
-                let token = response.json().token;
+                const { token, lastName, name, email } = response.json();
                 sessionStorage.setItem('token', token);
+                sessionStorage.setItem('userData', JSON.stringify({lastName, name, email}));
               })
-              .catch(error => console.log(error));
+              .catch(error => this.handleError(error));
   }
 
 }

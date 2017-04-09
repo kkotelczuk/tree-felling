@@ -3,11 +3,20 @@
     <span>Tree Felling app</span>
     <span class="spacer"></span>
     <button
+      *ngIf="!loggedIn"
       md-raised-button
       color="accent"
       (click)="openAuthDialog()"
     >
       Login
+    </button>
+    <button
+      *ngIf="loggedIn"
+      md-raised-button
+      color="accent"
+      (click)="logout()"
+    >
+      Logout
     </button>
   </md-toolbar>
 </header>

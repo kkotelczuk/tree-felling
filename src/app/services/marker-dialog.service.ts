@@ -6,39 +6,36 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import { Proposal } from '../proposal';
 import { User } from '../user';
-import { UserService } from './user.service';
 
 @Injectable()
 export class MarkerDialogService {
   private baseUrl = 'https://band-api.dev.volanto.pl:13888';
   private proposal: Proposal = {} as Proposal;
-  private user: User;
-  private headers: Headers;
 
   constructor(
     private dialog: MdDialog,
-    private http: Http,
-    private userService: UserService
+    private http: Http
   ) {}
 
-  private setHeaders(token): Headers {
+  private getHeaders(): Headers {
     return new Headers({
-      'X-AUTH-TOKEN': token,
+      'X-AUTH-TOKEN': sessionStorage.getItem('token'),
       'Content-Type': 'application/json'
     })
   }
 
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error);
+    return Promise.reject(error.message || error);
+  }
+
   private validateGis(lat, lng):Promise<any> {
     const gisUrl = `${this.baseUrl}/proposals/gis/validate/?latitude=${lat}&longitude=${lng}`;
-    this.userService.getUser().then(response => {
-      this.user = response;
-      this.headers = this.setHeaders(response.token);
-    });
 
-    return this.http.get(gisUrl, { headers: this.headers })
+    return this.http.get(gisUrl, { headers: this.getHeaders() })
                .toPromise()
                .then(response => response.json().features)
-               .catch(error => console.log(error));
+               .catch(error => this.handleError(error));
   }
 
   public showDialog(coords): Observable<any> {
@@ -57,7 +54,7 @@ export class MarkerDialogService {
       else{
         dialogRef.componentInstance.error = 'You can mark parcels only in Gmina Gdansk.';
       }
-    })
+    }).catch(error => dialogRef.componentInstance.error = 'You have no premmision to perform  this action, please login.')
     dialogRef = this.dialog.open(MarkerDialogComponent);
 
     return dialogRef.afterClosed();
@@ -65,15 +62,14 @@ export class MarkerDialogService {
 
   public sendProposal(value):Promise<any> {
     const proposalUrl = `${this.baseUrl}/proposals/`
-    this.proposal.name = this.user.name;
-    this.proposal.lastName = this.user.lastName;
-    this.proposal.email = this.user.email;
-    this.proposal = Object.assign(this.proposal, value.proposal)
+
+    const user = JSON.parse(sessionStorage.getItem('userData')) as User;
+    this.proposal = Object.assign(this.proposal, value.proposal, user)
 
     const putBody = JSON.stringify(this.proposal);
-    return this.http.put(proposalUrl, putBody,  { headers: this.headers })
+    return this.http.put(proposalUrl, putBody,  { headers: this.getHeaders() })
               .toPromise()
               .then(response => response.json() as Proposal)
-              .catch(error => console.log(error));
+              .catch(error => this.handleError(error));
   }
 }

@@ -26,7 +26,6 @@ export class MapComponent implements OnInit {
       this.proposals = response;
       localStorage.setItem('proposals', JSON.stringify(this.proposals));
       this.proposals.forEach(item => this.addMarker(item));
-      console.log(response);
     });
   }
 

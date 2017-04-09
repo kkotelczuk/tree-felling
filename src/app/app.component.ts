@@ -8,6 +8,8 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  loggedIn: boolean = sessionStorage.getItem('token')? true : false;
+
   constructor(
     private dialogService: MarkerDialogService,
     private authService: AuthService
@@ -16,7 +18,12 @@ export class AppComponent {
   openAuthDialog() {
     this.authService
       .showAuthDialog()
-      .subscribe(result => result ? this.authService.authorizeUser(result).then(res => console.log(res)) : '');
+      .subscribe(result => result ? this.authService.authorizeUser(result).then(() => this.loggedIn = true) : '');
+  }
+
+  logout() {
+    sessionStorage.clear();
+    this.loggedIn = false;
   }
 }
 
