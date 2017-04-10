@@ -1,13 +1,13 @@
 <div class="map-container">
   <sebm-google-map
-    [latitude]="lat"
-    [longitude]="lng"
-    [zoom]="zoom"
-    [streetViewControl]="streetViewControl"
+    [latitude]="_lat"
+    [longitude]="_lng"
+    [zoom]="_zoom"
+    [streetViewControl]="_streetViewControl"
     (mapClick)="openDialog($event)"
   >
     <sebm-google-map-marker
-      *ngFor="let m of markers"
+      *ngFor="let m of _markers"
       [latitude]="m.latitude"
       [longitude]="m.longitude"
     >

@@ -13,7 +13,7 @@ export class AuthDialogComponent {
     ) { }
 
   onSubmit(form) {
-    if(form.valid) {
+    if (form.valid) {
       this.dialogRef.close(form.value);
     }
   }

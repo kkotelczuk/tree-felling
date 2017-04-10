@@ -15,7 +15,7 @@ export class MarkerDialogComponent {
   }
 
   onSubmit(formValue) {
-    if(formValue.valid) {
+    if (formValue.valid) {
       this.dialogRef.close(formValue.value);
     }
   }

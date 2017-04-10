@@ -6,16 +6,14 @@
       *ngIf="!loggedIn"
       md-raised-button
       color="accent"
-      (click)="openAuthDialog()"
-    >
+      (click)="openAuthDialog()">
       Login
     </button>
     <button
       *ngIf="loggedIn"
       md-button
       color="accent"
-      (click)="logout()"
-    >
+      (click)="logout()">
       Logout
     </button>
   </md-toolbar>

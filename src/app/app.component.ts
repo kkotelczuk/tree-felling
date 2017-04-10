@@ -8,7 +8,7 @@ import { MdSnackBar } from '@angular/material';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  loggedIn: boolean = sessionStorage.getItem('token')? true : false;
+  private _loggedIn: boolean = sessionStorage.getItem('token') ? true : false;
 
   constructor(
     private authService: AuthService,
@@ -20,7 +20,7 @@ export class AppComponent {
       .showAuthDialog()
       .subscribe(result => result ? this.authService.authorizeUser(result)
         .then(() => {
-          this.loggedIn = true;
+          this._loggedIn = true;
           this.openSnackBar('Logging in successful.');
         })
         .catch((error) => {
@@ -31,7 +31,7 @@ export class AppComponent {
   logout() {
     sessionStorage.clear();
     this.openSnackBar('You have been logout.');
-    this.loggedIn = false;
+    this._loggedIn = false;
   }
 
   openSnackBar(message: string) {

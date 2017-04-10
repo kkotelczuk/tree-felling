@@ -8,8 +8,8 @@ import { User } from '../user';
 
 @Injectable()
 export class AuthService {
-  private baseUrl='https://band-api.dev.volanto.pl:13888/tokens';
-  private headers = new Headers({'Content-Type': 'application/json'});
+  private _baseUrl = 'https://band-api.dev.volanto.pl:13888/tokens';
+  private _headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(
     private dialog: MdDialog,
@@ -23,22 +23,26 @@ export class AuthService {
 
   public showAuthDialog(): Observable<any> {
     let dialogRef: MdDialogRef<AuthDialogComponent>;
+
     dialogRef = this.dialog.open(AuthDialogComponent);
 
     return dialogRef.afterClosed();
   }
 
   public authorizeUser(value): Promise<any> {
-    const postBody = JSON.stringify(value.auth);
-    return this.http.post(this.baseUrl, postBody,  { headers: this.headers })
-              .toPromise()
-              .then(response => {
-                const { token, lastName, name, email, isAdmin } = response.json();
-                sessionStorage.setItem('token', token);
-                sessionStorage.setItem('admin', isAdmin);
-                sessionStorage.setItem('userData', JSON.stringify({lastName, name, email}));
-              })
-              .catch(error => this.handleError(error));
+    return this.http.post(
+        this._baseUrl,
+        JSON.stringify(value.auth),
+        { headers: this._headers }
+      ).toPromise()
+        .then(response => {
+          const { token, lastName, name, email, isAdmin } = response.json();
+
+          sessionStorage.setItem('token', token);
+          sessionStorage.setItem('admin', isAdmin);
+          sessionStorage.setItem('userData', JSON.stringify({lastName, name, email}));
+        })
+        .catch(error => this.handleError(error));
   }
 
 }

@@ -10,6 +10,7 @@ export class MarkerInfoComponent implements OnInit {
   @Input() street: string;
   @Input() locationDesc: string;
   @Input() trees: number;
+
   constructor() { }
 
   ngOnInit() {

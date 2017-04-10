@@ -10,8 +10,8 @@ import { MdSnackBar } from '@angular/material';
 
 @Injectable()
 export class MarkerDialogService {
-  private baseUrl = 'https://band-api.dev.volanto.pl:13888';
-  private proposal: Proposal = {} as Proposal;
+  private _baseUrl = 'https://band-api.dev.volanto.pl:13888';
+  private _proposal: Proposal = {} as Proposal;
 
   constructor(
     private dialog: MdDialog,
@@ -23,7 +23,7 @@ export class MarkerDialogService {
     return new Headers({
       'X-AUTH-TOKEN': sessionStorage.getItem('token'),
       'Content-Type': 'application/json'
-    })
+    });
   }
 
   private handleError(error: any): Promise<any> {
@@ -31,8 +31,8 @@ export class MarkerDialogService {
     return Promise.reject(error.message || error);
   }
 
-  private validateGis(lat, lng):Promise<any> {
-    const gisUrl = `${this.baseUrl}/proposals/gis/validate/?latitude=${lat}&longitude=${lng}`;
+  private validateGis(lat, lng): Promise<any> {
+    const gisUrl = `${this._baseUrl}/proposals/gis/validate/?latitude=${lat}&longitude=${lng}`;
 
     return this.http.get(gisUrl, { headers: this.getHeaders() })
                .toPromise()
@@ -41,42 +41,49 @@ export class MarkerDialogService {
   }
 
   public showDialog(coords): Observable<any> {
-    let dialogRef: MdDialogRef<MarkerDialogComponent>;
     const {lat, lng} = coords;
-    this.validateGis(lat, lng).then(response => {
-      if(Array.isArray(response) && response.length > 0) {
+    let dialogRef: MdDialogRef<MarkerDialogComponent>;
+
+    this.validateGis(lat, lng)
+    .then(response => {
+      if (Array.isArray(response) && response.length > 0) {
         const data = response[0].attributes;
 
-        this.proposal.latitude = lat;
-        this.proposal.longitude = lng;
-        this.proposal.precinct = data.obreb;
-        this.proposal.parcelNumber = data.numer_dz;
+        this._proposal.latitude = lat;
+        this._proposal.longitude = lng;
+        this._proposal.precinct = data.obreb;
+        this._proposal.parcelNumber = data.numer_dz;
+
         data.allowed ?
         dialogRef.componentInstance.allowed = data.allowed :
-        dialogRef.componentInstance.error = 'It is not allowed to plce marker here.'
-      }
-      else{
+        dialogRef.componentInstance.error = 'It is not allowed to plce marker here.';
+
+      } else {
         dialogRef.componentInstance.error = 'You can mark parcels only in Gmina Gdansk.';
       }
-    }).catch(error => dialogRef.componentInstance.error = 'You have no premmision to perform  this action, please login.')
+    })
+    .catch(error => dialogRef.componentInstance.error = 'You have no premmision to perform  this action, please login.');
+
     dialogRef = this.dialog.open(MarkerDialogComponent);
 
     return dialogRef.afterClosed();
   }
 
-  public sendProposal(value):Promise<any> {
+  public sendProposal(value): Promise<any> {
+    const proposalUrl = `${this._baseUrl}/proposals/`;
+    const user = JSON.parse(sessionStorage.getItem('userData')) as User;
+
+    this._proposal = Object.assign(this._proposal, value.proposal, user);
     this.snackBar.open('Adding marker in progress...', '', {
       duration: 1000,
     });
-    const proposalUrl = `${this.baseUrl}/proposals/`
 
-    const user = JSON.parse(sessionStorage.getItem('userData')) as User;
-    this.proposal = Object.assign(this.proposal, value.proposal, user)
-
-    const putBody = JSON.stringify(this.proposal);
-    return this.http.put(proposalUrl, putBody,  { headers: this.getHeaders() })
-              .toPromise()
-              .then(response => response.json() as Proposal)
-              .catch(error => this.handleError(error));
+    return this.http.put(
+        proposalUrl,
+        JSON.stringify(this._proposal),
+        { headers: this.getHeaders() }
+      ).toPromise()
+       .then(response => response.json() as Proposal)
+       .catch(error => this.handleError(error));
   }
 }
