@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Proposal } from '../proposal';
-import { Http } from '@angular/http';
+import { Headers, Http } from '@angular/http';
 
 @Injectable()
 export class MapService {
@@ -8,9 +8,16 @@ export class MapService {
 
   constructor(private http: Http) { }
 
+  private getHeaders(): Headers {
+    return new Headers({
+      'X-AUTH-TOKEN': sessionStorage.getItem('token'),
+      'Content-Type': 'application/json'
+    })
+  }
+
   getProposals(): Promise<Proposal[]> {
     const proposalUrl = `${this.baseUrl}/proposals`
-    return this.http.get(proposalUrl)
+    return this.http.get(proposalUrl, { headers: this.getHeaders() })
                .toPromise()
                .then(response => response.json().content as Proposal[])
                .catch(this.handleError);

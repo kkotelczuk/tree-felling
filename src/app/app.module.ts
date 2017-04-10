@@ -8,6 +8,7 @@ import { AgmCoreModule } from 'angular2-google-maps/core';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
+import { MarkerInfoComponent } from './marker-info/marker-info.component';
 import { MarkerDialogComponent } from './marker-dialog/marker-dialog.component';
 import { AuthDialogComponent } from './auth-dialog/auth-dialog.component';
 
@@ -20,7 +21,8 @@ import { AuthService } from './services/auth.service';
     AppComponent,
     MapComponent,
     MarkerDialogComponent,
-    AuthDialogComponent
+    AuthDialogComponent,
+    MarkerInfoComponent
   ],
   imports: [
     BrowserModule,

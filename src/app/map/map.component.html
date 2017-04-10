@@ -8,13 +8,16 @@
   >
     <sebm-google-map-marker
       *ngFor="let m of markers"
-      [latitude]="m.lat"
-      [longitude]="m.lng"
-      [markerDraggable]="m.draggable"
+      [latitude]="m.latitude"
+      [longitude]="m.longitude"
     >
       <sebm-google-map-info-window>
-        <strong>{{m.lat}}</strong>
-        <strong>:{{m.lng}}</strong>
+        <app-marker-info
+          [id]="m.id"
+          [street]="m.street"
+          [locationDesc]="m.locationDesc"
+          [trees]="m.trees"
+        ></app-marker-info>
       </sebm-google-map-info-window>
     </sebm-google-map-marker>
   </sebm-google-map>

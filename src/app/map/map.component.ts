@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Directive } from '@angular/core';
 import { MarkerDialogService } from '../services/marker-dialog.service';
+import { MarkerInfoComponent } from '../marker-info/marker-info.component';
 import { MapService } from '../services/map.service';
 import { Proposal } from '../proposal';
+import { Marker } from '../marker';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss']
+  styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
   lat = 54.3512521;
   lng = 18.6153264;
   zoom = 12;
   streetViewControl = false;
-  markers = [];
+  markers: Marker[] = [];
   public proposals: Proposal[];
 
   constructor(
@@ -37,10 +39,7 @@ export class MapComponent implements OnInit {
   }
 
   addMarker(value) {
-    this.markers.push({
-      lat: value.latitude,
-      lng: value.longitude,
-      draggable: false
-    });
+    const {latitude, longitude, id, street, name, locationDesc, trees} = value;
+    this.markers.push({latitude, longitude, id, street, name, locationDesc, trees});
   }
 }
