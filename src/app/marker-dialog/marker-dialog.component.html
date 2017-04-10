@@ -1,0 +1,45 @@
+<div class="d-marker">
+  <form *ngIf="allowed" #proposalFormRef="ngForm" (ngSubmit)="onSubmit(proposalFormRef)">
+    <h3>Please fill the application</h3>
+    <fieldset ngModelGroup="proposal">
+      <md-input-container>
+        <input
+          mdInput
+          name="street"
+          required
+          ngModel
+          #streetRef="ngModel"
+          placeholder="Closest street name"
+          type="text"
+        />
+        <md-error>This field is Required</md-error>
+      </md-input-container>
+      <md-input-container>
+        <input
+          mdInput
+          name="locationDesc"
+          required
+          ngModel
+          #locationDescRef="ngModel"
+          placeholder="Short desc of location"
+          type="text"
+        />
+        <md-error>This field is Required</md-error>
+      </md-input-container>
+      <md-input-container>
+        <input
+          mdInput
+          name="trees"
+          required
+          ngModel
+          #treesRef="ngModel"
+          placeholder="How much trees has been cut"
+          type="number"
+        />
+        <md-error>This field is Required</md-error>
+      </md-input-container>
+    </fieldset>
+    <button type="submit" md-raised-button color="primary">Submit</button>
+  </form>
+  <md-error>{{error}}</md-error>
+</div>

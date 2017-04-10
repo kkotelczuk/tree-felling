@@ -1,0 +1,8 @@
+<md-list>
+  <h3 md-subheader>Users</h3>
+  <md-list-item *ngFor="let user of usersList">
+    <md-icon md-list-icon>{{user.role === "ADMIN"? "face" : "account_circle"}}</md-icon>
+    <h4 md-line>{{user.name}} {{user.lastName}}</h4>
+    <p md-line> {{user.email}} </p>
+  </md-list-item>
+</md-list>

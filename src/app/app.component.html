@@ -1,1 +1,32 @@
+<md-sidenav-container>
+  <header>
+    <md-toolbar color="primary">
+      <span>Tree Felling app</span>
+      <span class="spacer"></span>
+      <button
+        *ngIf="!_loggedIn"
+        md-raised-button
+        color="accent"
+        (click)="openAuthDialog()">
+        Login
+      </button>
+      <button
+        *ngIf="_loggedIn && _isAdmin"
+        md-button
+        (click)="getUsers(); sidenav.open()">
+        Users
+      </button>
+      <button
+        *ngIf="_loggedIn"
+        md-button
+        color="accent"
+        (click)="logout()">
+        Logout
+      </button>
+    </md-toolbar>
+  </header>
+  <md-sidenav #sidenav class="sidenav">
+    <app-user-list *ngIf="_isAdmin" [usersList]="_usersList"></app-user-list>
+  </md-sidenav>
 <app-map></app-map>
+</md-sidenav-container>

@@ -1,0 +1,32 @@
+<div class="d-auth">
+  <h2>Login</h2>
+  <form #authFormRef="ngForm" (ngSubmit)="onSubmit(authFormRef)">
+    <fieldset ngModelGroup="auth">
+      <md-input-container>
+        <input
+          mdInput
+          name="username"
+          required
+          ngModel
+          #usernameRef="ngModel"
+          type="text"
+          placeholder="Username"
+        />
+        <md-error>This field is Required</md-error>
+      </md-input-container>
+      <md-input-container>
+        <input
+          mdInput
+          name="password"
+          required
+          ngModel
+          #passwordRef="ngModel"
+          type="password"
+          placeholder="Password"
+        />
+        <md-error>This field is Required</md-error>
+      </md-input-container>
+    </fieldset>
+    <button type="submit" md-raised-button color="primary">Submit</button>
+  </form>
+</div>
