@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { UsersService } from './services/users.service';
 import { MdSnackBar } from '@angular/material';
 
 @Component({
@@ -9,9 +10,12 @@ import { MdSnackBar } from '@angular/material';
 })
 export class AppComponent {
   private _loggedIn: boolean = sessionStorage.getItem('token') ? true : false;
+  private _isAdmin: boolean = sessionStorage.getItem('admin') ? true : false;
+  private _usersList = [];
 
   constructor(
     private authService: AuthService,
+    private usersService: UsersService,
     public snackBar: MdSnackBar
     ) {}
 
@@ -38,6 +42,10 @@ export class AppComponent {
     this.snackBar.open(message, '', {
       duration: 2000,
     });
+  }
+
+  getUsers() {
+    this.usersService.getAllUsers().then(response => this._usersList = response);
   }
 }
 

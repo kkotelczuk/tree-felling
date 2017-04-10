@@ -11,10 +11,12 @@ import { MapComponent } from './map/map.component';
 import { MarkerInfoComponent } from './marker-info/marker-info.component';
 import { MarkerDialogComponent } from './marker-dialog/marker-dialog.component';
 import { AuthDialogComponent } from './auth-dialog/auth-dialog.component';
+import { UserListComponent } from './user-list/user-list.component';
 
 import { MarkerDialogService } from './services/marker-dialog.service';
 import { MapService } from './services/map.service';
 import { AuthService } from './services/auth.service';
+import { UsersService } from './services/users.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { AuthService } from './services/auth.service';
     MapComponent,
     MarkerDialogComponent,
     AuthDialogComponent,
-    MarkerInfoComponent
+    MarkerInfoComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +40,8 @@ import { AuthService } from './services/auth.service';
   providers: [
     MarkerDialogService,
     MapService,
-    AuthService
+    AuthService,
+    UsersService
   ],
   entryComponents: [
     MarkerDialogComponent,
