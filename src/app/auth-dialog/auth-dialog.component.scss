@@ -1,0 +1,18 @@
+.d-auth {
+  min-width: 380px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    fieldset {
+    border: none;
+    display: flex;
+
+    md-input-container {
+      margin: 20px;
+      padding-bottom: 1px;
+    }
+  }
+  }
+}

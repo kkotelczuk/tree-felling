@@ -6,6 +6,7 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import { Proposal } from '../proposal';
 import { User } from '../user';
+import { MdSnackBar } from '@angular/material';
 
 @Injectable()
 export class MarkerDialogService {
@@ -14,7 +15,8 @@ export class MarkerDialogService {
 
   constructor(
     private dialog: MdDialog,
-    private http: Http
+    private http: Http,
+    public snackBar: MdSnackBar
   ) {}
 
   private getHeaders(): Headers {
@@ -49,7 +51,9 @@ export class MarkerDialogService {
         this.proposal.longitude = lng;
         this.proposal.precinct = data.obreb;
         this.proposal.parcelNumber = data.numer_dz;
-        dialogRef.componentInstance.allowed = data.allowed;
+        data.allowed ?
+        dialogRef.componentInstance.allowed = data.allowed :
+        dialogRef.componentInstance.error = 'It is not allowed to plce marker here.'
       }
       else{
         dialogRef.componentInstance.error = 'You can mark parcels only in Gmina Gdansk.';
@@ -61,6 +65,9 @@ export class MarkerDialogService {
   }
 
   public sendProposal(value):Promise<any> {
+    this.snackBar.open('Adding marker in progress...', '', {
+      duration: 1000,
+    });
     const proposalUrl = `${this.baseUrl}/proposals/`
 
     const user = JSON.parse(sessionStorage.getItem('userData')) as User;

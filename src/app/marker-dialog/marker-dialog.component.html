@@ -1,5 +1,6 @@
-<div>
+<div class="d-marker">
   <form *ngIf="allowed" #proposalFormRef="ngForm" (ngSubmit)="onSubmit(proposalFormRef)">
+    <h3>Please fill the application</h3>
     <fieldset ngModelGroup="proposal">
       <md-input-container>
         <input
@@ -32,13 +33,13 @@
           required
           ngModel
           #treesRef="ngModel"
-          placeholder="How much trees fellt"
+          placeholder="How much trees has been cut"
           type="number"
         />
         <md-error>This field is Required</md-error>
       </md-input-container>
     </fieldset>
-    <button type="submit" md-raised-button>Submit</button>
+    <button type="submit" md-raised-button color="primary">Submit</button>
   </form>
   <md-error>{{error}}</md-error>
 </div>

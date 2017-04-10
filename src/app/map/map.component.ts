@@ -4,6 +4,7 @@ import { MarkerInfoComponent } from '../marker-info/marker-info.component';
 import { MapService } from '../services/map.service';
 import { Proposal } from '../proposal';
 import { Marker } from '../marker';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-map',
@@ -20,7 +21,8 @@ export class MapComponent implements OnInit {
 
   constructor(
     private dialogService: MarkerDialogService,
-    private mapService:  MapService
+    private mapService:  MapService,
+    public snackBar: MdSnackBar
   ) { }
 
   ngOnInit() {
@@ -35,11 +37,20 @@ export class MapComponent implements OnInit {
     this.dialogService
       .showDialog($event.coords)
       .subscribe(result => result ? this.dialogService.sendProposal(result)
-        .then(response => this.addMarker(response)) : '');
+        .then(response => {
+          this.addMarker(response);
+          this.openSnackBar('Marker has been added.');
+        }) : '');
   }
 
   addMarker(value) {
-    const {latitude, longitude, id, street, name, locationDesc, trees} = value;
-    this.markers.push({latitude, longitude, id, street, name, locationDesc, trees});
+    const {latitude, longitude, id, street, locationDesc, trees} = value;
+    this.markers.push({latitude, longitude, id, street, locationDesc, trees});
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: 2000,
+    });
   }
 }

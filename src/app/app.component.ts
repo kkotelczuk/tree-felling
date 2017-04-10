@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MarkerDialogService } from './services/marker-dialog.service';
 import { AuthService } from './services/auth.service';
 import { MdSnackBar } from '@angular/material';
 
@@ -12,7 +11,6 @@ export class AppComponent {
   loggedIn: boolean = sessionStorage.getItem('token')? true : false;
 
   constructor(
-    private dialogService: MarkerDialogService,
     private authService: AuthService,
     public snackBar: MdSnackBar
     ) {}
